@@ -1,0 +1,32 @@
+sudo: false
+language: python
+  - "2.6"
+  - "2.7"
+  - "3.3"
+  - "3.4"
+  - "3.5"
+  - "3.5-dev"  # 3.5 development branch
+  - "3.6-dev"
+  - "3.6-dev"  # 3.6 development branch
+  - "3.7-dev"  # 3.7 development branch
+  
+  services:
+  - redis
+ env:
+  - FLASK=0.10.1
+  - FLASK=0.9
+  - FLASK=0.8.1
+  - FLASK=0.7.2
+  # PyPy versions
+  - "pypy3.5"
+  # command to install dependencies
+install:
+  - pip install -q Flask==$FLASK
+  - pip install -q -r dev_requirements.txt
+  - pip install -q -e
+# command to run tests
+script:
+  - pytest
+  
+ virtualenv:
+  system_site_packages: true
