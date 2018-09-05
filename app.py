@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, abort, url_for
+from flask import Flask, jsonify, abort, url_for, request
 
 app = Flask(__name__, static_url_path = "")
 
@@ -52,6 +52,7 @@ def make_public_order(order):
 def get_orders():
     return jsonify({'orders': list(map(make_public_order, orders))})
 
+
 @app.route('/api/v1/orders/<int:order_id>', methods = ['GET'])
 def get_order(order_id):
     order = filter(lambda t: t['id'] == order_id, orders)
@@ -59,6 +60,22 @@ def get_order(order_id):
         abort(404)
 
     return jsonify( { 'order': make_public_order(order[0]) })
+
+@app.route('/api/v1/orders', methods = ['POST'])
+def create_order():
+    if not request.json or not 'category' in request.json:
+        abort(400)
+    order = {
+        'id': orders[-1]['id'] + 1,
+        'category': request.json['category'],
+        'food_type': request.json.get('food_type', ""),
+        'price': request.json.get['price'],
+        'delivery_time': request.json.get('delivery_time'),
+        'done': False
+    }
+    orders.append(order)
+    return jsonify({ 'order': make_public_order(order) }), 201
+
 
 
 if __name__ == '__main__':
