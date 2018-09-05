@@ -102,6 +102,14 @@ def update_order(order_id):
 
 
 
+@app.route('/api/v1/orders/<int:order_id>', methods = ['DELETE'])
+def delete_order(order_id):
+    order = filter(lambda t: t['id'] == order_id, orders)
+    if len(order) == 0:
+        abort(404)
+    orders.remove(order[0])
+    return jsonify( { 'result': True } )
+
 
 if __name__ == '__main__':
     app.run(debug=True)
