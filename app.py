@@ -78,5 +78,30 @@ def create_order():
 
 
 
+@app.route('/api/v1/orders/<int:order_id>', methods = ['PUT'])
+def update_order(order_id):
+    order = filter(lambda t: t['id'] == order_id, orders)
+    if len(order) == 0:
+        abort(404)
+    if not request.json:
+        abort(400)
+    if 'category' in request.json and type(request.json['category']) != unicode:
+        abort(400)
+    if 'food_type' in request.json and type (request.json['food_type']) is not unicode:
+        abort(400)
+
+    if 'done' in request.json and type(request.json['done']) is not bool:
+        abort(400)
+
+    order[0]['category'] = request.json.get('category', order[0]['category'])
+    order[0]['food_type'] = request.json.get('food_type', order[0]['food_type'])
+    order[0]['price'] = request.json.get('price', order[0]['price'])
+    order[0]['delivery_time'] = request.json.get('delivery_time', order[0]['delivery_time'])
+    order[0]['done'] = request.json.get('done', order[0]['done'])
+    return jsonify( { 'order': make_public_order(order[0]) })
+
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
