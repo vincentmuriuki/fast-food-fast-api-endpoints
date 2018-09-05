@@ -50,7 +50,7 @@ def make_public_order(order):
 
 @app.route('/api/v1/orders', methods = ['GET'])
 def get_orders():
-    return jsonify({'orders': map(make_public_order, orders)})
+    return jsonify({'orders': list(map(make_public_order, orders))})
 
 @app.route('/api/v1/orders/<int:order_id>', methods = ['GET'])
 def get_order(order_id):
