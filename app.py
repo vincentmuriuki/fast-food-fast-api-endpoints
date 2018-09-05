@@ -5,7 +5,7 @@ app = Flask(__name__, static_url_path = "")
 
 orders = [
     {
-        'id': '01',
+        'id': '1',
         'category': 'Chicken',
         'food_type': 'Chicken Biryani',
         'price': '$99',
@@ -13,7 +13,7 @@ orders = [
         'done': False
     },
     {
-        'id': '01',
+        'id': '2',
         'category': 'Chicken',
         'food_type': 'Chicken Biryani',
         'price': '$99',
@@ -21,7 +21,7 @@ orders = [
         'done': False
     },
     {
-        'id': '01',
+        'id': '3',
         'category': 'Chicken',
         'food_type': 'Chicken Biryani',
         'price': '$99',
@@ -29,7 +29,7 @@ orders = [
         'done': False
     },
     {
-        'id': '01',
+        'id': '4',
         'category': 'Chicken',
         'food_type': 'Chicken Biryani',
         'price': '$99',
@@ -50,13 +50,14 @@ def make_public_order(order):
 
 @app.route('/api/v1/orders', methods = ['GET'])
 def get_orders():
-    return jsonify({'orders': list(map(make_public_order, orders))})
+    return jsonify({'orders': map(make_public_order, orders)})
 
-@app.route('/api/orders/<int:order_id>', methods = ['GET'])
+@app.route('/api/v1/orders/<int:order_id>', methods = ['GET'])
 def get_order(order_id):
     order = filter(lambda t: t['id'] == order_id, orders)
     if len(order) == 0:
         abort(404)
+
     return jsonify( { 'order': make_public_order(order[0]) })
 
 
